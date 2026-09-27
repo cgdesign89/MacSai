@@ -188,7 +188,7 @@ public enum MCConstants {
 
     // MARK: - Preserved Languages
 
-    // English, Chinese, Russian (in common modern and legacy forms), and Base
+    // English, Chinese, Russian, German (in common modern and legacy forms), and Base
     // are never offered for deletion. These include the interface languages
     // Mac Sai supports plus the base resources many apps require.
     public static let preservedLanguages: Set<String> = [
@@ -196,6 +196,8 @@ public enum MCConstants {
         "zh.lproj", "zh-Hans.lproj", "zh-Hant.lproj", "zh_CN.lproj", "zh_TW.lproj",
         "Chinese.lproj", "Simplified Chinese.lproj", "Traditional Chinese.lproj",
         "ru.lproj", "ru-RU.lproj", "ru_RU.lproj", "Russian.lproj",
+        "de.lproj", "de-DE.lproj", "de_DE.lproj", "de-AT.lproj", "de_AT.lproj",
+        "de-CH.lproj", "de_CH.lproj", "German.lproj",
     ]
 
     // MARK: - Log File Path
@@ -223,5 +225,5 @@ public enum MCConstants {
     // plugin was tried (commit history) but doesn't work under multi-arch
     // `swift build --arch arm64 --arch x86_64` because xcbuild doesn't
     // execute plugins.
-    public static let appVersion = "1.21.1"
+    public static let appVersion = "1.21.2"
 }
