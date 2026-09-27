@@ -179,7 +179,10 @@ public struct SidebarView: View {
 
             settingsFooter
         }
-        .frame(minWidth: 180, idealWidth: 200)
+        .frame(
+            minWidth: AppLanguage.current.resolved == .de ? 250 : 180,
+            idealWidth: AppLanguage.current.resolved == .de ? 260 : 200
+        )
     }
 
     /// A collapsible section header: always-visible leading chevron + title;
