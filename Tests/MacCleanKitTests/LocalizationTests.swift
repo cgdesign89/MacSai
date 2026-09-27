@@ -3,6 +3,43 @@ import XCTest
 @testable import MacCleanKit
 
 final class LocalizationTests: AppLanguageTestCase {
+    func testGermanLanguageSelectionAndRegionalIdentifiers() {
+        XCTAssertTrue(AppLanguage.allCases.contains(.de))
+        XCTAssertEqual(AppLanguage.de.pickerLabel, "Deutsch")
+        XCTAssertEqual(AppLanguage.de.localeIdentifier, "de")
+        for identifier in ["de-DE", "de_AT", "DE-ch", "de"] {
+            XCTAssertEqual(AppLanguage.preferredLanguage(for: identifier), .de)
+        }
+    }
+
+    func testGermanUsesEveryTranslationOverloadAndModelLabels() {
+        AppLanguage.current = .de
+        XCTAssertEqual(L10n.tr("设置", "Settings"), "Einstellungen")
+        XCTAssertEqual(L10n.tr("设置", "Settings", "Настройки"), "Einstellungen")
+        XCTAssertEqual(L10n.tr("设置"), "Einstellungen")
+        XCTAssertEqual(L10n.tr("跟随系统", "System", "Системный"), "System")
+        XCTAssertEqual(MaintenanceTask.freeUpRAM.title, "Arbeitsspeicher freigeben")
+        XCTAssertEqual(ScanCategory.userCaches.displayName, "Benutzer-Cache-Dateien")
+        XCTAssertEqual(FileListSort.sizeDescending.label, "Größte zuerst")
+    }
+
+    func testGermanFallbackPreservesDynamicEnglishPluralForms() {
+        AppLanguage.current = .de
+        for count in [1, 2] {
+            let english = "\(count) threat\(count == 1 ? "" : "s") found"
+            XCTAssertEqual(L10n.tr("发现 \(count) 个威胁", english), english)
+            XCTAssertEqual(L10n.tr("发现 \(count) 个威胁", english, "Russian"), english)
+        }
+        XCTAssertEqual(L10n.tr("未翻译", "New feature"), "New feature")
+        XCTAssertEqual(L10n.tr("未翻译"), "未翻译")
+    }
+
+    func testGermanLanguageResourcesCannotBeOfferedForCleanup() {
+        for folder in ["de.lproj", "de-DE.lproj", "de_AT.lproj", "de-CH.lproj", "German.lproj"] {
+            XCTAssertTrue(LanguagePreferences.alwaysKept.contains(folder))
+        }
+    }
+
     func testRussianIsSelectableAndUsesRussianLocale() {
         XCTAssertTrue(AppLanguage.allCases.contains(.ru))
         XCTAssertEqual(AppLanguage.ru.rawValue, "ru")
@@ -16,7 +53,7 @@ final class LocalizationTests: AppLanguageTestCase {
         XCTAssertEqual(AppLanguage.preferredLanguage(for: "RU_ru"), .ru)
         XCTAssertEqual(AppLanguage.preferredLanguage(for: "zh-Hans-CN"), .zhHans)
         XCTAssertEqual(AppLanguage.preferredLanguage(for: "en-US"), .en)
-        XCTAssertEqual(AppLanguage.preferredLanguage(for: "de-DE"), .en)
+        XCTAssertEqual(AppLanguage.preferredLanguage(for: "de-DE"), .de)
     }
 
     func testThreeLanguageTranslation() {

@@ -124,7 +124,7 @@ final class LanguagePreferencesTests: EnglishAppLanguageTestCase {
         let lprojs = Set(selectable.flatMap(\.lprojs))
 
         XCTAssertTrue(lprojs.contains("fr.lproj"), "fr should be selectable")
-        XCTAssertTrue(lprojs.contains("de.lproj"), "de should be selectable")
+        XCTAssertFalse(lprojs.contains("de.lproj"), "de is always-kept, must not appear")
         XCTAssertFalse(lprojs.contains("en.lproj"), "en is always-kept, must not appear")
         XCTAssertFalse(lprojs.contains("Base.lproj"), "Base is always-kept, must not appear")
     }
